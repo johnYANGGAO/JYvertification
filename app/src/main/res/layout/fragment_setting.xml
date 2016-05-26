@@ -1,0 +1,102 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.johnson.jyvertification.Controller.SettingFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/card_outline">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/card_bg"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/modify_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:background="@drawable/backgroundlistitme">
+
+                    <TextView
+                        style="@style/text_itme"
+                        android:text="修改密码" />
+
+                    <ImageView style="@style/accessory_indicator" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="15dp"
+                    android:background="@color/card_outline" />
+
+                <RelativeLayout
+                    android:id="@+id/update_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:visibility="gone"
+                    android:background="@drawable/backgroundlistitme">
+
+                    <TextView
+                        style="@style/text_itme"
+                        android:text="更新用户信息" />
+
+                    <ImageView style="@style/accessory_indicator" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <RelativeLayout
+                android:id="@+id/create_user_plate"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/backgroundlistitme">
+
+                <TextView
+
+                    style="@style/text_itme"
+                    android:text="创建平台用户" />
+
+                <ImageView style="@style/accessory_indicator" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
+
+            <RelativeLayout
+                android:id="@+id/about_me"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:visibility="gone"
+                android:background="@drawable/backgroundlistitme">
+
+                <TextView
+
+                    style="@style/text_itme"
+                    android:text="关于我" />
+
+                <ImageView style="@style/accessory_indicator" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>

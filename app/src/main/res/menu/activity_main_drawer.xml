@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_camera"
+            android:visible="false"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Import" />
+        <item
+            android:id="@+id/nav_checking"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="查询" />
+        <item
+            android:id="@+id/nav_records"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="记录" />
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="设置" />
+        <item android:title="关于我" >
+            <menu>
+                <item
+                    android:id="@+id/nav_aboutMe"
+                    android:icon="@drawable/ic_menu_share"
+                    android:title="我" />
+                <item
+                    android:id="@+id/nav_send"
+                    android:visible="false"
+                    android:icon="@drawable/ic_menu_send"
+                    android:title="Send" />
+            </menu>
+        </item>
+    </group>
+
+</menu>

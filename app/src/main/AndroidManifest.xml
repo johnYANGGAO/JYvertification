@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.johnson.jyvertification">
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/app_icon"
+        android:label="核查信息"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:replace="icon,label,theme">
+        <activity
+            android:name=".Controller.Activitys.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Controller.Activitys.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Controller.Activitys.ActivityVertification"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".Controller.Activitys.ActivityRecordsList"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <receiver
+            android:name=".BroadCastUtil.ErrorContentReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".Controller.Activitys.ActivityCheckingLogin" />
+        <activity
+            android:name=".Controller.Activitys.ActivityInfoDisplay"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Controller.Activitys.ActivitySettingModifyPassword"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service
+            android:name=".GetInfoByIDService.GetInfoIntentService"
+            android:exported="false" />
+
+        <activity
+            android:name=".Controller.Activitys.ActivityCreateUser"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+    </application>
+
+</manifest>

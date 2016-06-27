@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.inputmethod.InputMethodManager;
 
 import com.johnson.jyvertification.Consts.PublicUtil;
 import com.johnson.jyvertification.GetInfoByIDService.GetInfoIntentService;
@@ -64,4 +65,13 @@ public class BaseActivity extends AppCompatActivity {
 
         super.onDestroy();
     }
+   /**
+    * 备用*/
+    private void quitSoftInput() {
+
+        ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
+                hideSoftInputFromWindow(BaseActivity.this.getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
 }

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -67,7 +68,7 @@ public class ActivityVertificationFragment extends Fragment {
         sure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                quitSoftInput();
                 if (!isValid(account_name)) {
                     showAlert("姓名不能为空");
                     return;
@@ -156,6 +157,12 @@ public class ActivityVertificationFragment extends Fragment {
         }
         return true;
 
+    }
+    private void quitSoftInput() {
+
+        ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).
+                hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
 

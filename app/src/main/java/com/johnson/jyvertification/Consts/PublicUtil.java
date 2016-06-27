@@ -17,9 +17,9 @@ public class PublicUtil {
     public static final String login_company_id = "logincompanyid";
     public static final String login_name_key = "LoginName";
     public static final String login_password_key = "LoginPassword";
-    public static final String public_key = "your publick key";
-    public static final String base_url = "your base url";
-    public static final String private_key = "your private key";
+    public static final String public_key = "your key ";
+    public static final String base_url = "http://xxx.com/";
+    public static final String private_key = "your key";
 /*
 GET api/Menus/Get?login={login}&pwd={pwd}&signature={signature}
 获取根据用户角色获取相应的平台菜单(All)

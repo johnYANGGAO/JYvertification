@@ -1,6 +1,5 @@
 package com.johnson.jyvertification.Controller.Activitys;
 
-import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -9,7 +8,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -54,8 +52,11 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class ActivityRecordsList extends AppCompatActivity implements OnListCheckingIDFragmentInteractionListener ,OnParseJsonObjectCallBack {
     /**
      * 管理CheckingAccountListFragment and CheckingIDListFragment
+     *
+     *备注 ： 后期 需要 设置 下拉刷新 上啦加载 显示请求 附值 skip
      */
     private int type;
+    private int page;
     private  String TAG="ActivityRecordsList";
     private static int SUCESS=0;
     private static int ERROR=1;
@@ -85,7 +86,7 @@ public class ActivityRecordsList extends AppCompatActivity implements OnListChec
             }else if(msg.what==ERROR) {
                 new SweetAlertDialog(ActivityRecordsList.this, SweetAlertDialog.WARNING_TYPE)
                         .setTitleText("确定返回吗?")
-                        .setContentText((String) msg.obj)
+                        .setContentText( msg.obj!=null?(String)msg.obj:"连接服务器失败")
                         .setConfirmText("好的!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -129,9 +130,17 @@ public class ActivityRecordsList extends AppCompatActivity implements OnListChec
         }
     }
 
-    /**
-     * TODO  网络要请求
-     */
+    private  void loadMore(){
+
+        page+=19;
+        getData(type);
+    }
+
+    private void loadFresh(){
+
+        page=0;
+        getData(type);
+    }
     private List<RecordsItemModel> datalist = new ArrayList<>();
     private List<AccountBillItemModel> dataAccountlist = new ArrayList<>();
     /**
@@ -224,8 +233,8 @@ public class ActivityRecordsList extends AppCompatActivity implements OnListChec
         Map<String, String> params = new HashMap<>();
 
         String name_login = null, nameUser = null, noCard = null, dateStart = null, dateEnd = null;
-        Bundle bundle = new Bundle();
-        bundle = this.getIntent().getExtras();
+        Bundle bundle = this.getIntent().getExtras();
+//        bundle = this.getIntent().getExtras();
 
         if (type == 0) {
 
@@ -239,19 +248,18 @@ public class ActivityRecordsList extends AppCompatActivity implements OnListChec
             dateStart = bundle.getString("dateStart");
             dateEnd = bundle.getString("dateEnd");
 
-
             params.put("UserName", nameUser);
             params.put("CardNo", noCard);
             params.put("ModuleType", "4");
             params.put("IP", "");
-            params.put("Skip", "8");
-            params.put("Take", "9");
+            params.put("Skip", "1");
+            params.put("Take", "20");
 
         } else if (type == 1) {
             dateStart = bundle.getString("dateStart");
             dateEnd = bundle.getString("dateEnd");
-            params.put("Skip", "3");
-            params.put("Take", "4");
+            params.put("Skip", "1");
+            params.put("Take", "20");
         }
 
 
@@ -266,32 +274,51 @@ public class ActivityRecordsList extends AppCompatActivity implements OnListChec
 
     public void displayView(int type) {
 
-        if (datalist.size() <= 0||dataAccountlist.size()<=0) {
-            new SweetAlertDialog(ActivityRecordsList.this, SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText("确定返回吗?")
-                    .setContentText("没有数据哦!")
-                    .setConfirmText("好的!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                @Override
-                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                    finish();
-                }
-            }).show();
 
-            return;
-        }
         Fragment fragment = null;
         switch (type) {
 
             case 0:
+                if (datalist.size() <= 0) {
+                    new SweetAlertDialog(ActivityRecordsList.this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("确定返回吗?")
+                            .setContentText("没有数据哦!")
+                            .setConfirmText("好的!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            finish();
+                        }
+                    }).show();
+
+                    return;
+                }
+
+
 //                CheckingIDListFragment
                 fragment = CheckingIDListFragment.newInstance(datalist);
                 break;
 
             case 1:
+                if (dataAccountlist.size()<=0) {
+                    new SweetAlertDialog(ActivityRecordsList.this, SweetAlertDialog.WARNING_TYPE)
+                            .setTitleText("确定返回吗?")
+                            .setContentText("没有数据哦!")
+                            .setConfirmText("好的!").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            finish();
+                        }
+                    }).show();
+
+                    return;
+                }
 //                CheckingAccountListFragment
                 fragment = CheckingAccountListFragment.newInstance(dataAccountlist);
                 break;
         }
+
+
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.activity_records_list_content_frame, fragment);
         ft.commit();
@@ -334,12 +361,16 @@ public class ActivityRecordsList extends AppCompatActivity implements OnListChec
 
 
     }
-    /**
-     * 加载更多会使用到
-     * */
+
+
     private RecordsItemDataModel   dataModel;
     private  AccountBillItemDataModel billItemDataModel;
 
+
+
+    /**
+
+     * */
     @Override
     public void paseJsonToBean(JSONObject obj) {
         /**
@@ -349,26 +380,31 @@ public class ActivityRecordsList extends AppCompatActivity implements OnListChec
         if (type==0){
             //item 为 RecordsItemModel
             JSONArray jsonArray=obj.getJSONArray("Data");
-            dataModel=new RecordsItemDataModel();
-            dataModel.setData(JSON.parseArray(jsonArray.toString(),RecordsItemModel.class));
-            dataModel.setTotal(obj.getInt("Total"));
-            dataModel.setNext_id(obj.getInt("Next_id"));
+            dataModel = new RecordsItemDataModel();
+            if(jsonArray.length()>0) {
 
+                dataModel.setData(JSON.parseArray(jsonArray.toString(), RecordsItemModel.class));
+                dataModel.setTotal(obj.getInt("Total"));
+                dataModel.setNext_id(obj.getInt("Next_id"));//当没有数据时 没有这个key
+                datalist=dataModel.getData();
+            }
 
-            datalist=dataModel.getData();
         }else if(type==1){
             //item 为 AccountBillItemModel
 //            dataAccountlist
+
             JSONArray jsonArray=obj.getJSONArray("Data");
+            if(jsonArray.length()>0) {
 
-            billItemDataModel=new AccountBillItemDataModel();
-            billItemDataModel.setData(JSON.parseArray(jsonArray.toString(),AccountBillItemModel.class));
-            billItemDataModel.setNext_id(obj.getInt("Next_id"));
-            billItemDataModel.setTotal(obj.getInt("Total"));
-            billItemDataModel.setTotalData(JSON.parseObject(obj.getString("TotalData"),AccountBillItemModel.class));
+                billItemDataModel = new AccountBillItemDataModel();
+                billItemDataModel.setData(JSON.parseArray(jsonArray.toString(), AccountBillItemModel.class));
+                billItemDataModel.setNext_id(obj.getInt("Next_id"));
+                billItemDataModel.setTotal(obj.getInt("Total"));
+                billItemDataModel.setTotalData(JSON.parseObject(obj.getString("TotalData"), AccountBillItemModel.class));
+                dataAccountlist=billItemDataModel.getData();
+                Log.i(TAG,"第一个数 id 是 "+dataAccountlist.get(0).getID()+"获取总数 "+billItemDataModel.getTotal());
+            }
 
-
-            dataAccountlist=billItemDataModel.getData();
         }
 
         } catch (JSONException e) {

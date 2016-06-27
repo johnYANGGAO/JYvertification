@@ -8,9 +8,9 @@ import java.io.Serializable;
 public class AccountBillItemModel extends  BaseBean implements Serializable {
 
 
-    private String CompanyID,ViewDate;
+    private String CompanyID,ViewDate,ID;
     private float TotalMoney;
-    private int VBankCount,VIDCardCount,VBankSucceed,VIDCardSucceed,VBankCharging,VIDCardCharging,ID;
+    private int VBankCount,VIDCardCount,VBankSucceed,VIDCardSucceed,VBankCharging,VIDCardCharging;
 
     public String getCompanyID() {
         return CompanyID;
@@ -21,7 +21,7 @@ public class AccountBillItemModel extends  BaseBean implements Serializable {
     }
 
     public String getViewDate() {
-        return ViewDate;
+        return ViewDate.substring(0,ViewDate.indexOf("T"));
     }
 
     public void setViewDate(String viewDate) {
@@ -76,11 +76,11 @@ public class AccountBillItemModel extends  BaseBean implements Serializable {
         this.VBankCharging = VBankCharging;
     }
 
-    public int getID() {
+    public String getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 

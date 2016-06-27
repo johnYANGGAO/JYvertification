@@ -3,6 +3,7 @@ package com.johnson.jyvertification.Controller.Activitys;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -65,6 +67,7 @@ public class ActivityCheckingLogin extends AppCompatActivity {
 
             @Override
             public void onTimeSelect(Date date) {
+
                 Log.i(TAG, "system time is : " + date + "");
                 String dateString = TimeUtil.dateToStringSimple(date);
                 Log.i(TAG, "format time is : " + dateString);
@@ -89,6 +92,7 @@ public class ActivityCheckingLogin extends AppCompatActivity {
         start_date_option.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                quitSoftInput();
                 Log.i(TAG, "CLICKED THE  START DATE");
                 pvTime.show();
                 begin = true;
@@ -97,6 +101,7 @@ public class ActivityCheckingLogin extends AppCompatActivity {
         end_date_option.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                quitSoftInput();
                 Log.i(TAG, "CLICKED THE  END DATE");
                 pvTime.show();
                 begin = false;
@@ -106,6 +111,7 @@ public class ActivityCheckingLogin extends AppCompatActivity {
         transfer_button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                quitSoftInput();
                 attemptLogin(narrow);
             }
         });
@@ -163,15 +169,16 @@ public class ActivityCheckingLogin extends AppCompatActivity {
 //                cancel = true;
 //            }
 
-            if (TextUtils.isEmpty(nameUser)) {
-                UserName.setError("客户名不能为空");
-                focusView = UserName;
-                cancel = true;
-            } else if (TextUtils.isEmpty(noCard)) {
-                CardNo.setError("身份证号不能为空");
-                focusView = CardNo;
-                cancel = true;
-            } else if (TextUtils.isEmpty(dateStart)) {
+//            if (TextUtils.isEmpty(nameUser)) {
+//                UserName.setError("客户名不能为空");
+//                focusView = UserName;
+//                cancel = true;
+//            } else if (TextUtils.isEmpty(noCard)) {
+//                CardNo.setError("身份证号不能为空");
+//                focusView = CardNo;
+//                cancel = true;
+//            } else
+            if (TextUtils.isEmpty(dateStart)) {
                 StartDate.setError("起始时间不能为空");
                 focusView = StartDate;
                 cancel = true;
@@ -183,11 +190,11 @@ public class ActivityCheckingLogin extends AppCompatActivity {
         } else if (type == 1) {
 
             if (TextUtils.isEmpty(dateStart)) {
-                StartDate.setError(getString(R.string.error_field_required));
+                StartDate.setError("其实时间不能为空");
                 focusView = StartDate;
                 cancel = true;
             } else if (TextUtils.isEmpty(dateEnd)) {
-                EndDate.setError(getString(R.string.error_field_required));
+                EndDate.setError("终止时间不能为空");
                 focusView = EndDate;
                 cancel = true;
             }
@@ -260,6 +267,12 @@ public class ActivityCheckingLogin extends AppCompatActivity {
         StartDate.setText(dateString);
         EndDate.setText(dateString);
 
+    }
+    private void quitSoftInput() {
+
+        ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
+                hideSoftInputFromWindow(ActivityCheckingLogin.this.getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
     }
 }
 

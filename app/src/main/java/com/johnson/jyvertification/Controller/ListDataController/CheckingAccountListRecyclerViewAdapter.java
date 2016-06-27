@@ -35,9 +35,9 @@ public class CheckingAccountListRecyclerViewAdapter extends RecyclerView.Adapter
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
 
-        holder.records_account_time.setText(mValues.get(position).getViewDate());
-        holder.records_account_content.setText(mValues.get(position).getTotalMoney()+"元");
-        holder.records_check_type.setText(mValues.get(position).getVIDCardCount());
+        holder.records_account_time.setText(""+mValues.get(position).getViewDate());
+        holder.records_account_content.setText(""+mValues.get(position).getTotalMoney()+"元");
+        holder.records_check_type.setText(""+mValues.get(position).getVIDCardCount());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
